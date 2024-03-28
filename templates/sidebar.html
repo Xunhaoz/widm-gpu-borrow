@@ -1,0 +1,67 @@
+<!-- Sidebar -->
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center"
+       href="{{ url_for('index_page') }}">
+        <div class="sidebar-brand-icon rotate-n-15">
+            <i class="fas fa-toolbox"></i>
+        </div>
+        <div class="sidebar-brand-text mx-3">WIDM <sup>GPU</sup></div>
+    </a>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
+
+    <!-- Nav Item - Dashboard -->
+    <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('index_page') }}">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Dashboard</span></a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('apply_page') }}">
+            <i class="fas fa-fw fa-table"></i>
+            <span>Apply Form</span></a>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <!-- Heading -->
+    <div class="sidebar-heading">
+        Machine
+    </div>
+
+    <!-- Nav Item - Pages Collapse Menu -->
+    {% for machine in bar_service.machines %}
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse{{ machine }}"
+               aria-expanded="true" aria-controls="collapse{{ machine }}">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>{{ machine }}</span>
+            </a>
+            <div id="collapse{{ machine }}" class="collapse" aria-labelledby="headingTwo"
+                 data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Graphics Processing Unit</h6>
+                    {% for gpu_id_pair in bar_service.machine_gpu_map[machine] %}
+                        <a class="collapse-item"
+                           href="{{ url_for('tables_page', hardware_id=gpu_id_pair[1], year=bar_service.now_year, week=bar_service.now_week) }}">{{ gpu_id_pair[0] }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+        </li>
+    {% endfor %}
+
+    <!-- Divider -->
+    <hr class="sidebar-divider d-none d-md-block">
+
+    <!-- Sidebar Toggler (Sidebar) -->
+    <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+    </div>
+
+</ul>
+<!-- End of Sidebar -->
