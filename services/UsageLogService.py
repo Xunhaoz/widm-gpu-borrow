@@ -28,7 +28,7 @@ class UsageLogService:
         start_date = datetime.datetime.strptime(f"{self.year}-{self.week}-1", "%Y-%W-%w")
         end_date = datetime.datetime.strptime(f"{self.year}-{self.week}-0", "%Y-%W-%w")
 
-        self.table_header = [(start_date + datetime.timedelta(days=d)).strftime("(%m/%d)") for d in range(7)]
+        self.table_header = [(start_date + datetime.timedelta(days=d)).strftime("%m/%d") for d in range(7)]
 
         joined_data = db.session.query(UsageLog, User) \
             .join(User, UsageLog.user_id == User.id) \

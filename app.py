@@ -23,6 +23,7 @@ oauth.register(
     client_secret='iB89Pc9aBMCOzQe5N5HD8bsnpPKQgdmPJQ1ahYfXsvXgDALza',
     authorize_url='https://portal.ncu.edu.tw/oauth2/authorization',
     access_token_url='https://portal.ncu.edu.tw/oauth2/token',
+
     client_kwargs={
         'scope': 'identifier chinese-name email'
     }
@@ -129,7 +130,7 @@ def record_apply_form():
 def login():
     if 'ncu_protal' in session:
         return redirect(url_for('index_page'))
-    return oauth.ncu_protal.authorize_redirect(url_for('authorize', _external=True))
+    return oauth.ncu_protal.authorize_redirect("https://widm-gpu.nevercareu.space/authorize")
 
 
 @app.route('/logout')
