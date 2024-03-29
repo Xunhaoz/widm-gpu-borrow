@@ -11,6 +11,16 @@
    "58": ["1080Ti", "2080Ti","3080Ti"],
    "59": ["3080Ti","3080"]
   },
- "Domain": "https://widm-gpu.nevercareu.space/",
- "Port": 9025
+  "Domain": "https://widm-gpu.nevercareu.space/",
+  "Port": 9025,
+  "OAuth": {
+    "name": "ncu_protal",
+    "client_id": "20240326233529QPrxZqGjPOmE",
+    "client_secret": "iB89Pc9aBMCOzQe5N5HD8bsnpPKQgdmPJQ1ahYfXsvXgDALza",
+    "authorize_url": "https://portal.ncu.edu.tw/oauth2/authorization",
+    "access_token_url": "https://portal.ncu.edu.tw/oauth2/token",
+    "client_kwargs": {
+      "scope": "identifier chinese-name email"
+    }
+  }
 }

@@ -15,19 +15,14 @@ from services.IndexService import IndexService
 from authlib.integrations.flask_client import OAuth
 from flask import Flask, request, session, render_template, url_for, redirect
 
+with open('config.json', 'r') as file:
+    config = json.load(file)
+
 app = Flask(__name__)
 app.secret_key = uuid.uuid4().hex
 oauth = OAuth(app)
 oauth.register(
-    name='ncu_protal',
-    client_id='20240326233529QPrxZqGjPOmE',
-    client_secret='iB89Pc9aBMCOzQe5N5HD8bsnpPKQgdmPJQ1ahYfXsvXgDALza',
-    authorize_url='https://portal.ncu.edu.tw/oauth2/authorization',
-    access_token_url='https://portal.ncu.edu.tw/oauth2/token',
-
-    client_kwargs={
-        'scope': 'identifier chinese-name email'
-    }
+    **config['OAuth']
 )
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
@@ -35,9 +30,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
 logging.basicConfig(filename='./logs/app.log', level=logging.ERROR, format='%(asctime)s - %(levelname)s - %(message)s')
-
-with open('config.json', 'r') as file:
-    config = json.load(file)
 
 with app.app_context():
     db.create_all()
