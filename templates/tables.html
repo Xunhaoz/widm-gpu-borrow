@@ -38,13 +38,13 @@
                             <thead class="thead-light">
                             <tr>
                                 <th></th>
-                                <th>Monday {{ usage_log_service.table_header[0] }}</th>
-                                <th>TuesDay {{ usage_log_service.table_header[1] }}</th>
-                                <th>WendsDay {{ usage_log_service.table_header[2] }}</th>
-                                <th>ThursDay {{ usage_log_service.table_header[3] }}</th>
-                                <th>Friday {{ usage_log_service.table_header[4] }}</th>
-                                <th>SaturDay {{ usage_log_service.table_header[5] }}</th>
-                                <th>SunDay {{ usage_log_service.table_header[6] }}</th>
+                                <th>星期一 {{ usage_log_service.table_header[0] }}</th>
+                                <th>星期二 {{ usage_log_service.table_header[1] }}</th>
+                                <th>星期三 {{ usage_log_service.table_header[2] }}</th>
+                                <th>星期四 {{ usage_log_service.table_header[3] }}</th>
+                                <th>星期五 {{ usage_log_service.table_header[4] }}</th>
+                                <th>星期六 {{ usage_log_service.table_header[5] }}</th>
+                                <th>星期日 {{ usage_log_service.table_header[6] }}</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -98,25 +98,7 @@
     <i class="fas fa-angle-up"></i>
 </a>
 
-<!-- Logout Modal-->
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-primary" href="../startbootstrap-sb-admin-2/login.html">Logout</a>
-            </div>
-        </div>
-    </div>
-</div>
+{% include 'logout.html' %}
 
 <!-- Bootstrap core JavaScript-->
 <script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js') }}"></script>

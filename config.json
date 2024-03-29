@@ -10,5 +10,7 @@
    "55": ["3090Ti"],
    "58": ["1080Ti", "2080Ti","3080Ti"],
    "59": ["3080Ti","3080"]
-  }
+  },
+ "Domain": "https://widm-gpu.nevercareu.space/",
+ "Port": 9025
 }

@@ -1,5 +1,6 @@
 import json
 import uuid
+import logging
 import datetime
 
 from models.database import db
@@ -33,23 +34,25 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
+logging.basicConfig(filename='./logs/app.log', level=logging.ERROR, format='%(asctime)s - %(levelname)s - %(message)s')
+
+with open('config.json', 'r') as file:
+    config = json.load(file)
+
 with app.app_context():
-    db.drop_all()
-    db.session.commit()
     db.create_all()
-    with open('config.json') as f:
-        machines = json.load(f)['Hardware']
-        for machine, gpus in machines.items():
-            for gpu in gpus:
+    for machine, gpus in config['Hardware'].items():
+        for gpu in gpus:
+            if db.session.query(Hardware).filter_by(machine=machine, gpu=gpu).first() is None:
                 db.session.add(Hardware(id=uuid.uuid4().hex, machine=machine, gpu=gpu))
         db.session.commit()
 
 
-@app.errorhandler(404)
+@app.errorhandler(Exception)
 def page_not_found(error):
     ncu_protal = None if 'ncu_protal' not in session else session['ncu_protal']
     bar_service = BarService(ncu_protal)
-
+    app.logger.error(str(error))
     return render_template(
         '404.html',
         bar_service=bar_service,
@@ -61,7 +64,6 @@ def index_page():
     ncu_protal = None if 'ncu_protal' not in session else session['ncu_protal']
     bar_service = BarService(ncu_protal)
     index_service = IndexService()
-
     return render_template(
         'index.html',
         bar_service=bar_service,
@@ -72,10 +74,8 @@ def index_page():
 @app.route('/tables/<hardware_id>', methods=['GET'])
 def tables_page(hardware_id):
     ncu_protal = None if 'ncu_protal' not in session else session['ncu_protal']
-
     bar_service = BarService(ncu_protal)
     usage_log_service = UsageLogService(request.args['year'], request.args['week'], hardware_id)
-
     return render_template(
         'tables.html',
         bar_service=bar_service,
@@ -88,10 +88,8 @@ def tables_page(hardware_id):
 def apply_page():
     if 'ncu_protal' not in session:
         return redirect(url_for('login'))
-
     ncu_protal = session['ncu_protal']
     bar_service = BarService(ncu_protal)
-
     return render_template(
         'apply.html',
         bar_service=bar_service,
@@ -103,7 +101,6 @@ def record_apply_form():
     user = User.query.filter_by(token=session['ncu_protal']).first()
     user_id = user.id
     data = request.json
-
     start_date = datetime.datetime.strptime(data['startTime'], "%Y-%m-%d")
     end_date = datetime.datetime.strptime(data['endTime'], "%Y-%m-%d")
     start_time_period, end_time_period = int(data['startTimeSelect']), int(data['endTimeSelect'])
@@ -112,6 +109,7 @@ def record_apply_form():
     if start_date == end_date:
         for hour in range(start_time_period, end_time_period):
             db.session.add(UsageLog(user_id=user_id, hardware_id=hardware_id, date=start_date, period=hour))
+
     else:
         for hour in range(start_time_period, 24):
             db.session.add(UsageLog(user_id=user_id, hardware_id=hardware_id, date=start_date, period=hour))
@@ -121,7 +119,6 @@ def record_apply_form():
                 db.session.add(UsageLog(user_id=user_id, hardware_id=hardware_id, date=date, period=hour))
         for hour in range(0, end_time_period):
             db.session.add(UsageLog(user_id=user_id, hardware_id=hardware_id, date=end_date, period=hour))
-
     db.session.commit()
     return {'msg': "log usage success"}, 200
 
@@ -130,7 +127,7 @@ def record_apply_form():
 def login():
     if 'ncu_protal' in session:
         return redirect(url_for('index_page'))
-    return oauth.ncu_protal.authorize_redirect("https://widm-gpu.nevercareu.space/authorize")
+    return oauth.ncu_protal.authorize_redirect(f"{config['Domain']}/authorize")
 
 
 @app.route('/logout')
@@ -160,4 +157,4 @@ def authorize():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host="0.0.0.0", port=5000)
+    app.run(host="0.0.0.0", port=config['Port'])

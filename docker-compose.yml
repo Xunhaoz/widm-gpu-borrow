@@ -1,10 +1,13 @@
 version: '1.0'
 
 services:
-  web:
-    build:
-      context: .
+  gpu-borrow-website:
+    image: gpu-borrow-website:latest
+    build: .
+    tty: true
+    restart: always
     volumes:
       - ./instance:/app/instance
+      - ./logs:/app/logs
     ports:
-      - "5000:5000"
+      - "9025:9025"
