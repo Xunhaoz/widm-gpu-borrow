@@ -24,6 +24,7 @@ oauth = OAuth(app)
 oauth.register(
     **config['OAuth']
 )
+app.config['SERVER_NAME'] = config['Domain']
 app.config['SECRET_KEY'] = config['SecretKey']
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -119,7 +120,7 @@ def record_apply_form():
 def login():
     if 'ncu_protal' in session:
         return redirect(url_for('index_page'))
-    return oauth.ncu_protal.authorize_redirect(f"{config['Domain']}/authorize")
+    return oauth.ncu_protal.authorize_redirect(url_for('authorize', _external=True))
 
 
 @app.route('/logout')

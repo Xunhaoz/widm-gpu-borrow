@@ -11,7 +11,7 @@
    "58": ["1080Ti", "2080Ti","3080Ti"],
    "59": ["3080Ti","3080"]
   },
-  "Domain": "https://widm-gpu.nevercareu.space/",
+  "Domain": "https://widm-gpu.nevercareu.space",
   "Port": 9025,
   "OAuth": {
     "name": "ncu_protal",
