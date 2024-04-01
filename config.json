@@ -22,5 +22,6 @@
     "client_kwargs": {
       "scope": "identifier chinese-name email"
     }
-  }
+  },
+  "SecretKey": "OUlRLZbCs4"
 }

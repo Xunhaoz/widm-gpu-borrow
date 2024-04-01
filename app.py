@@ -24,7 +24,7 @@ oauth = OAuth(app)
 oauth.register(
     **config['OAuth']
 )
-
+app.config['SECRET_KEY'] = config['SecretKey']
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
